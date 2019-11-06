@@ -1,0 +1,29 @@
+
+data cleaning: Yichen Liu
+-clean Lund data
+-clean Visby data
+-clean Upsala data
+-clean Umea data
+-clean Luleu data
+
+3.1 The temperature of a given day:
+-make histogram
+-return staDev
+-return mean
+-setup function such that it can be called by next two functions form similar to:
+Double_t func(file,date,plot=1){
+if (plot = 1)
+  plot
+return([mean,staDev]) //vector format or something
+}
+
+3.2 The temperature for every day of the year: Martin Waites
+-run previous for all days,
+-plot
+
+
+Our result: Martin Waites
+- we intend on comparing the 3.2 results from different places dependant on latitude.
+-reuse cod from 3.2
+-run first for all days for chosen files
+-plot multiple
