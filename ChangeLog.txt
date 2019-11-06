@@ -1,0 +1,5 @@
+
+
+1/11/2019: Martin
+First meeting, Added Workplan and Changelog, filed in workplan
+Setup Repository, Added datasets and Project pdf's
