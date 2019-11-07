@@ -12,8 +12,16 @@ changed everyDay method to use arrays rather than vectors as the graphing method
 
 7/11/2019
 Finished coding everyDay method so that it provides apropriate graph
-(the graph will need to be inproved when we can see wat it looks like with the oneDay method)
+(the graph will need to be improved when we can see wat it looks like with the oneDay method)
 
 7/11/2019
 Changed up everyDay considerably to allow for the calling of everyDay in LattDiff.
-started work on Lattdiff sering up to alow for calling everyDay
+started work on LattDiff setting up to allow for calling everyDay
+
+7/11/2019
+Compleate rework of LattDiff No longer calls everyDay as I could not get that to work.
+Reworked everyDay as we no longer need to call it in LattDiff
+
+7/11/2019
+LattDiff mostly finished will need some testing when I have access to root (tomorow)
+Setup graph stuff in LattDiff to be tested.
