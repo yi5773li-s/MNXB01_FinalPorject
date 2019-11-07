@@ -1,4 +1,4 @@
-
+(the project file has three functions oneDay, everyDay and LattDiff)
 
 6/11/2019
 First meeting, Added Workplan and Changelog, filed in workplan
@@ -14,4 +14,6 @@ changed everyDay method to use arrays rather than vectors as the graphing method
 Finished coding everyDay method so that it provides apropriate graph
 (the graph will need to be inproved when we can see wat it looks like with the oneDay method)
 
-
+7/11/2019
+Changed up everyDay considerably to allow for the calling of everyDay in LattDiff.
+started work on Lattdiff sering up to alow for calling everyDay
