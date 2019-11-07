@@ -188,22 +188,27 @@ void LattDiff(){
 	lundG->SetMinimum(-4);
 	lundG->SetFillColor(2);
 	//lundG->SetFillStyle(3001)
+	//lundG->Draw("a4")
 	lundG->Draw("AL");
 	TGraphErrors* visbyG = new TGraphErrors(n,days,visbyM,zeros,visbyS);
 	visbyG->SetFillColor(3);
 	//visbyG->SetFillStyle(3004)
+	//visbyG->Draw("a4")
 	visbyG->Draw("L");
 	TGraphErrors* upsalaG = new TGraphErrors(n,days,upsalaM,zeros,upsalaS);
 	upsalaG->SetFillColor(4);
 	//upsalaG->SetFillStyle(3005)
+	//upsalaG->Draw("a4")
 	upsalaG->Draw("L");
 	TGraphErrors* umeaG = new TGraphErrors(n,days,umeaM,zeros,umeaS);
 	umeaG->SetFillColor(6);
 	//umeaG->SetFillStyle(3006)
+	//umeaG->Draw("a4")
 	umeaG->Draw("L");
 	TGraphErrors* luleuG = new TGraphErrors(n,days,luleuM,zeros,luleuS);
 	luleuG->SetFillColor(28);
 	//luleuG->SetFillStyle(3007)
+	//luleuG->Draw("a4")
 	luleuG->Draw("L");
 	*/
 
