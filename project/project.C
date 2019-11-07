@@ -39,13 +39,13 @@ Double_t * everyDay(string filePath="../clean_data/upsala_clean.dat", Int_t plot
 	Int_t n=365;
 	Double_t *p;
 	Double_t daysMean[n],daysStaDev[n],days[n],zeros[n];
-	static Double_t store[2][365];
+	static Double_t store[365];
 	//vector<Double_t> daysMean;
 	//vector<Double_t> daysStaDev;
 	//vector<Int_t> days;
 	//vector<Int_t> zeros;
 	for(Int_t i = 0; i < n; i++){
-		p = oneDay(filePath,i+1,0);
+		p = oneDay(filePath,i,0);
 		daysMean[i]=p[0];
 		daysStaDev[i]=p[1];
 		days[i]=i+1;
@@ -55,10 +55,12 @@ Double_t * everyDay(string filePath="../clean_data/upsala_clean.dat", Int_t plot
 		//days.push_back(i);
 		//zeros.push_back(0);
 		if (plot == 0){
-			store[0][i] = p[0];
-			store[1][i] = p[1];
+			store[i] = daysMean[i];
+			
 		}
-		
+		if (plot == 2){
+			store[i] = daysStaDev[i];
+		}
 	}
 	if (plot == 1){
 		gStyle->SetOptStat(0);
@@ -77,15 +79,15 @@ Double_t * everyDay(string filePath="../clean_data/upsala_clean.dat", Int_t plot
 		c1->SaveAs("every_day_graph_one_location.jpg");
 	}
 	if (plot == 0){
-		return *store;
+		return store;
 	}	
 }
 
 
 void LattDiff(){
 	Int_t n=365;
-	Int_t days[n];
-	Int_t zeros[n];
+	Double_t days[365];
+	Double_t zeros[365];
 	/*
 	Double_t *lund, *visby, *upsala, *umea, *luleu;
 	lund = everyDay("../clean_data/lund_clean.dat",0);
@@ -99,22 +101,24 @@ void LattDiff(){
 	Double_t umeaM[n],umeaS[n];
 	Double_t luleuM[n],luleuS[n];
 	*/
-	Double_t *test0, *test1, *test2;
-	test0 = everyDay("test0",0);
+	Double_t *test01, *test02, *test1, *test2;
+	test01 = everyDay("test0",0);
+	test02 = everyDay("test0",2);
 	test1 = everyDay("test1",0);
 	test2 = everyDay("test2",0);
-	Double_t test0M[n],test0S[n],test1M[n],test1S[n],test2M[n],test2S[n];
-	for (Int_t i=0; i < 365; i++){
+	Double_t test0M[365],test0S[365],test1M[n],test1S[n],test2M[n],test2S[n];
+	for (Int_t i=0; i < 364; i++){
 		days[i]=i+1;
 		zeros[i]=0;		
 		
-		test0M[i] = test0[0][i];
-		test0S[i] = test0[1][i];
+		test0M[i] = test01[i];
+		test0S[i] = test02[i];
+		/*
 		test1M[i] = test1[0][i];
 		test1S[i] = test1[1][i];
 		test2M[i] = test2[0][i];
 		test2S[i] = test2[1][i];
-		/*
+		
 		lundM[i] = lund[0][i];
 		lundS[i] = lund[1][i];
 		visbyM[i] = visby[0][i];
@@ -127,28 +131,18 @@ void LattDiff(){
 		luleuS[i] = luleu[1][i];
 		*/
 	}
-	gStyle->SetOptStat(0);
-	gStyle->SetOptTitle(0);
-	gStyle->SetTitleSize(0.05, "x");
-	gStyle->SetTitleSize(0.05, "y");
-	gStyle->SetLabelSize(0.05, "x");
-	gStyle->SetLabelSize(0.05, "y");
-	gStyle->SetPadTopMargin(0.05);
-	gStyle->SetPadRightMargin(0.05);
-	gStyle->SetPadBottomMargin(0.16);
-	gStyle->SetPadLeftMargin(0.16);
-	TCanvas* c1 = new TCanvas("c1", "every day graph multiple locations", 900, 600);
+	//TCanvas* c2 = new TCanvas("c2", "every day graph multiple locations", 900, 600);
 	TGraphErrors* t0 = new TGraphErrors(n,days,test0M,zeros,test0S);
 	t0->Draw("AL");
-	TGraphErrors* t1 = new TGraphErrors(n,days,test1M,zeros,test1S);
-	t1->Draw("L");
-	TGraphErrors* t2 = new TGraphErrors(n,days,test2M,zeros,test2S);
-	t2->Draw("L");
+	//TGraphErrors* t1 = new TGraphErrors(n,days,test1M,zeros,test1S);
+	//t1->Draw("L");
+	//TGraphErrors* t2 = new TGraphErrors(n,days,test2M,zeros,test2S);
+	//t2->Draw("L");
 	
 	
 	
 	
 	
-	c1->SaveAs("every_day_graph_multiple_locations.jpg");
+	//c2->SaveAs("every_day_graph_multiple_locations.jpg");
 
 }
