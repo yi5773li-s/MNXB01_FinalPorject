@@ -1,5 +1,17 @@
 
 
-1/11/2019: Martin
+6/11/2019
 First meeting, Added Workplan and Changelog, filed in workplan
 Setup Repository, Added datasets and Project pdf's
+
+7/11/2019
+started coding everyDay method
+
+7/11/2019
+changed everyDay method to use arrays rather than vectors as the graphing method TGraphErrors douse not alow vectors as input.
+
+7/11/2019
+Finished coding everyDay method so that it provides apropriate graph
+(the graph will need to be inproved when we can see wat it looks like with the oneDay method)
+
+
