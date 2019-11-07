@@ -12,7 +12,15 @@ Int_t n=365;
 Double_t outputMS[2];
 
 Double_t * oneDay(string filePath, Int_t day, Int_t plot=0){
-	
+
+
+
+
+
+
+
+
+
 	if (filePath == "test0"){
 		Double_t tday = (Double_t)day;
 		outputMS[0]=tday+2.2;
@@ -27,7 +35,7 @@ Double_t * oneDay(string filePath, Int_t day, Int_t plot=0){
 	}
 	else if (filePath == "test2"){
 		Double_t tday = (Double_t)day;
-		outputMS[0]=tday+4.2;
+		outputMS[0]=150;
 		outputMS[1]=tday/2;
 		return outputMS;
 	}
@@ -78,7 +86,7 @@ Double_t * everyDay(string filePath="../clean_data/upsala_clean.dat", Int_t plot
 	/*
 	if (plot == 0){
 		return outputBigM;
-	}	
+	}
 	if (plot == 2){
 		return outputBigS;
 	}
@@ -96,14 +104,14 @@ void LattDiff(){
 	upsalaM = everyDay("../clean_data/upsala_clean.dat",0);
 	umeaM = everyDay("../clean_data/umea_clean.dat",0);
 	luleuM = everyDay("../clean_data/luleu_clean.dat",0);
-	
+
 	Double_t *lundS, *visbyS, *upsalaS, *umeaS, *luleuS;
 	lundS = everyDay("../clean_data/lund_clean.dat",0);
 	visbyS = everyDay("../clean_data/visby_clean.dat",0);
 	upsalaS = everyDay("../clean_data/upsala_clean.dat",0);
 	umeaS = everyDay("../clean_data/umea_clean.dat",0);
 	luleuS = everyDay("../clean_data/luleu_clean.dat",0);
-	
+
 	Double_t *test0M, *test0S, *test1M, *test1S, *test2M, *test2S;
 	test0M = everyDay("test0",1);
 	test0S = everyDay("test0",2);
@@ -113,7 +121,12 @@ void LattDiff(){
 	test2S = everyDay("test2",2);
 	*/
 	Double_t *t0, *t1, *t2;
-	Double_t t0daysMean[n],t0daysStaDev[n],t1daysMean[n],t1daysStaDev[n];
+	Double_t t0daysMean[n],t0daysStaDev[n],t1daysMean[n],t1daysStaDev[n],t2daysMean[n],t2daysStaDev[n];
+	/*
+	Double_t *lundP, *visbyP, *upsalaP, *umeaP, *luleuP;
+	Double_t lundM[n], visbyM[n], upsalaM[n], umeaM[n], luleuM[n];
+	Double_t lundS[n], visbyS[n], upsalaS[n], umeaS[n], luleuS[n];
+	*/
 	for(Int_t i = 0; i < n; i++){
 		days[i]=i+1;
 		zeros[i]=0;
@@ -123,15 +136,26 @@ void LattDiff(){
 		t1 = oneDay("test1",i,0);
 		t1daysMean[i]=t1[0];
 		t1daysStaDev[i]=t1[1];
-	}
-	
-	
-	
-	
-	for (Int_t i=0; i < 365; i++){
-		cout << t0daysMean[i] << endl;
-		cout << t1daysMean[i] << endl;
-		
+		t2 = oneDay("test2",i,0);
+		t2daysMean[i]=t2[0];
+		t2daysStaDev[i]=t2[1];
+		/*
+		lundP = oneDay("../clean_data/lund_clean.dat",i,0);
+		lundM[i]=lundP[0];
+		lundS[i]=lundP[1];
+		visbyP = oneDay("../clean_data/visby_clean.dat",i,0);
+		visbyM[i]=visbyP[0];
+		visbyS[i]=visbyP[1];
+		upsalaP = oneDay("../clean_data/upsala_clean.dat",i,0);
+		upsalaM[i]=upsalaP[0];
+		upsalaS[i]=upsalaP[1];
+		umeaP = oneDay("../clean_data/umea_clean.dat",i,0);
+		umeaM[i]=umeaP[0];
+		umeaS[i]=umeaP[1];
+		luleuP = oneDay("../clean_data/luleu_clean.dat",i,0);
+		luleuM[i]=luleuP[0];
+		luleuS[i]=luleuP[1];
+		*/
 	}
 	TCanvas* c2 = new TCanvas("c2", "every day graph multiple locations", 900, 600);
 	gStyle->SetOptStat(0);
@@ -144,20 +168,45 @@ void LattDiff(){
 	gStyle->SetPadRightMargin(0.05);
 	gStyle->SetPadBottomMargin(0.16);
 	gStyle->SetPadLeftMargin(0.16);
+
 	TGraphErrors* t0p = new TGraphErrors(n,days,t0daysMean,zeros,t0daysStaDev);
 	t0p->SetMaximum(400);
 	t0p->SetMinimum(-400);
+	t0p->SetFillColor(2);
+  //t0p->SetFillStyle(3005);
 	t0p->Draw("AL");
 	TGraphErrors* t1p = new TGraphErrors(n,days,t1daysMean,zeros,t1daysStaDev);
+	t1p->SetFillColor(3);
 	t1p->Draw("L");
-	//TGraphErrors* t2 = new TGraphErrors(n,days,test2M,zeros,test2S);
-	//t2->Draw("L");
-	
-	
-	
-	
-	
+	TGraphErrors* t2p = new TGraphErrors(n,days,t2daysMean,zeros,t2daysStaDev);
+	t2p->SetFillColor(4);
+	t2p->Draw("L");
+
+	/*
+	TGraphErrors* lundG = new TGraphErrors(n,days,lundM,zeros,lundS);
+	lundG->SetMaximum(4);
+	lundG->SetMinimum(-4);
+	lundG->SetFillColor(2);
+	//lundG->SetFillStyle(3001)
+	lundG->Draw("AL");
+	TGraphErrors* visbyG = new TGraphErrors(n,days,visbyM,zeros,visbyS);
+	visbyG->SetFillColor(3);
+	//visbyG->SetFillStyle(3004)
+	visbyG->Draw("L");
+	TGraphErrors* upsalaG = new TGraphErrors(n,days,upsalaM,zeros,upsalaS);
+	upsalaG->SetFillColor(4);
+	//upsalaG->SetFillStyle(3005)
+	upsalaG->Draw("L");
+	TGraphErrors* umeaG = new TGraphErrors(n,days,umeaM,zeros,umeaS);
+	umeaG->SetFillColor(6);
+	//umeaG->SetFillStyle(3006)
+	umeaG->Draw("L");
+	TGraphErrors* luleuG = new TGraphErrors(n,days,luleuM,zeros,luleuS);
+	luleuG->SetFillColor(28);
+	//luleuG->SetFillStyle(3007)
+	luleuG->Draw("L");
+	*/
+
 	c2->SaveAs("every_day_graph_multiple_locations.jpg");
 
 }
-
