@@ -7,7 +7,18 @@
 #include <TCanvas.h>
 #include <vector>
 #include <TGraphErrors.h>
-
+/*
+gStyle->SetOptStat(0);
+gStyle->SetOptTitle(0);
+gStyle->SetTitleSize(0.05, "x");
+gStyle->SetTitleSize(0.05, "y");
+gStyle->SetLabelSize(0.05, "x");
+gStyle->SetLabelSize(0.05, "y");
+gStyle->SetPadTopMargin(0.05);
+gStyle->SetPadRightMargin(0.05);
+gStyle->SetPadBottomMargin(0.16);
+gStyle->SetPadLeftMargin(0.16);
+*/
 Int_t n=365;
 Double_t outputMS[2];
 
@@ -65,6 +76,8 @@ Double_t * everyDay(string filePath="../clean_data/upsala_clean.dat", Int_t plot
 		*/
 	}
 	if (plot == 0){
+		TCanvas* c1 = new TCanvas("c1", "every day graph one location", 900, 600);
+		/*
 		gStyle->SetOptStat(0);
 		gStyle->SetOptTitle(0);
 		gStyle->SetTitleSize(0.05, "x");
@@ -75,10 +88,37 @@ Double_t * everyDay(string filePath="../clean_data/upsala_clean.dat", Int_t plot
 		gStyle->SetPadRightMargin(0.05);
 		gStyle->SetPadBottomMargin(0.16);
 		gStyle->SetPadLeftMargin(0.16);
-		TCanvas* c1 = new TCanvas("c1", "every day graph one location", 900, 600);
+		*/
 		TGraphErrors* g1 = new TGraphErrors(n,days,daysMean,zeros,daysStaDev);
+		g1->SetLineColor(2);
+		g1->SetFillColor(3);
 		g1->Draw("AL");
 		c1->SaveAs("every_day_graph_one_location.jpg");
+		
+		TCanvas* c4 = new TCanvas("c1", "every day graph one location histogram", 900, 600);
+		/*
+		gStyle->SetOptStat(0);
+		gStyle->SetOptTitle(0);
+		gStyle->SetTitleSize(0.05, "x");
+		gStyle->SetTitleSize(0.05, "y");
+		gStyle->SetLabelSize(0.05, "x");
+		gStyle->SetLabelSize(0.05, "y");
+		gStyle->SetPadTopMargin(0.05);
+		gStyle->SetPadRightMargin(0.05);
+		gStyle->SetPadBottomMargin(0.16);
+		gStyle->SetPadLeftMargin(0.16);
+		*/
+		/*
+		TH1I* histED = new TH1I("histED", "Temperature;Day of the year;Temperature[#circC]", 365, 1, 365);
+		for(int bin = 1; bin <= hist->GetNbinsX(); ++bin) {
+			hist->SetBinContent(bin, daysMean[bin-1]);
+			hist->SetBinError(bin, daysStaDev[bin-1]);
+		}
+		hist->SetLineColor(2);
+		hist->SetFillColor(3);
+		hist->Draw("E L");
+		*/
+		c4->SaveAs("every_day_graph_one_location_histogram.jpg");
 	}
 	/*
 	if (plot == 0){
