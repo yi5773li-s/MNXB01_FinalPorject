@@ -26,14 +26,15 @@ def clean_data(data_dir, save_dir, city_name=''):
     col0 = np.array([i.split('-') for i in data[:, 0]]).astype('int')
 
     # clean column 1
-    col1 = np.array([i.split(':') for i in data[:, 1]]).astype('int')
-    col1 = col1[:, 0]
+    #col1 = np.array([i.split(':') for i in data[:, 1]]).astype('int')
+    #col1 = col1[:, 0]
 
     # clean column 2
     col2 = data[:, 2].astype('float')
 
     # concatenate the cleaned columns to a new matrix array
-    result = np.column_stack((np.column_stack((col0, col1)), col2))
+    #result = np.column_stack((np.column_stack((col0, col1)), col2))
+    result = np.column_stack((col0, col2))
 
     # save the result to a specified dir
     save_dir = save_dir + city_name + '_clean.dat'
