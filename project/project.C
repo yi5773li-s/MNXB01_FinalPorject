@@ -126,6 +126,110 @@ Double_t* oneDay(string filePath, Int_t dayNo, Int_t plot=0)
 	return oneDayMDI(filePath, month, date, plot);
 }
 
+void WarmColdDay(string filePath="../clean_data/uppsala_clean.dat")
+{
+	TH1I* warm = new TH1I("temperature", "Warmest;Day of year;Entries", 300, 0, 365);
+	warm->SetFillColor(kRed + 1);
+	
+	TH1I* cold = new TH1I("temperature", "Coldest;Day of year;Entries", 365, 1, 365);
+	cold->SetFillColor(kBlue + 1);
+	
+	
+	int days_in_month[13] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	
+	Double_t yeart;
+	Double_t montht;
+	Double_t dayt;
+	Double_t tempt;
+	
+	vector<Double_t> y;
+	vector<Double_t> m;
+	vector<Double_t> d;
+	vector<Double_t> t;
+	vector<Double_t> average;
+	
+	// open data file
+	ifstream datafile(filePath.c_str());
+	
+	while (datafile >> yeart >> montht >> dayt >> tempt)
+	{
+		y.push_back(yeart);
+		m.push_back(montht);
+		d.push_back(dayt);
+		t.push_back(tempt);
+	}
+	
+	Int_t size = y.size();
+	
+	vector<Double_t> ty,tm,td;
+	
+	for (Int_t i = 0; i < size; i++)
+	{
+		ty.push_back(t[i]);
+		tm.push_back(m[i]);
+		td.push_back(d[i]);
+		
+		Double_t test = y[i];
+		
+		for (Int_t j = i+1; j < size; j++)
+		{
+			if (test == y[j])
+			{
+				ty.push_back(t[j]);
+				tm.push_back(m[j]);
+				td.push_back(d[j]);
+				i++;
+			}
+			else
+			{
+				break;
+			}
+		}
+		//Int_t indexMax = ty.size() - 1;
+		//Int_t indexMin = ty.min_e;
+		
+		double tMax = -1.0e100;
+		double tMin = 1.0e100;
+		int indexMax = 0;
+		int indexMin = 0;
+		
+		for (int i = 0; i < (int)ty.size(); i++)
+		{
+			if (ty[i] < tMin)
+			{
+				tMin = ty[i];
+				indexMin = i;
+			}
+			if (ty[i] > tMax)
+			{
+				tMax = ty[i];
+				indexMax = i;
+			}
+		}
+
+		Int_t date = td[indexMax];
+		if (tm[indexMax]!=2 and td[indexMax] !=29)
+		{
+			for (Int_t s = tm[indexMax]; s>0; s--)
+			{
+				date += days_in_month[s-1];
+			}
+		}
+		warm->Fill(date);
+		
+		date = td[indexMin];	
+		if (tm[indexMin]!=2 and td[indexMin] !=29)
+		{
+			for (Int_t s = tm[indexMin]; s>0; s--)
+			{
+				date += days_in_month[s-1];
+			}
+		}
+		cold->Fill(date);
+	}
+	warm->Draw();
+	cold->Draw("same");
+}
 
 void everyDay(string filePath="../clean_data/uppsala_clean.dat"){
 	Double_t *p;
