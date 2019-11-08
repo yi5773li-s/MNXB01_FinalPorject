@@ -49,7 +49,7 @@ Double_t * oneDay(string filePath, Int_t day, Int_t plot=0){
 	}
 }
 
-Double_t * everyDay(string filePath="../clean_data/upsala_clean.dat", Int_t plot=0){
+void everyDay(string filePath="../clean_data/upsala_clean.dat", Int_t plot=0){
 	Double_t *p;
 	Double_t daysMean[n],daysStaDev[n],days[n],zeros[n];
 	//vector<Double_t> daysMean;
@@ -213,21 +213,21 @@ void LattDiff(){
 	t0p->SetMinimum(-400);
 	t0p->SetLineColor(1);
 	t0p->SetFillColor(2);
- 	//t0p->SetFillStyle(3004);
-	//t0p->Draw("a4");
-	t0p->Draw("AL");
+ 	t0p->SetFillStyle(3004);
+	t0p->Draw("a4 ");
+	//t0p->Draw("AL");
 	TGraphErrors* t1p = new TGraphErrors(n,days,t1daysMean,zeros,t1daysStaDev);
 	t1p->SetLineColor(1);
 	t1p->SetFillColor(3);
-	//t1p->SetFillStyle(3005);
-	//t1p->Draw("a4");
-	t1p->Draw("L");
+	t1p->SetFillStyle(3005);
+	t1p->Draw("4 ");
+	//t1p->Draw("L");
 	TGraphErrors* t2p = new TGraphErrors(n,days,t2daysMean,zeros,t2daysStaDev);
 	t2p->SetLineColor(1);
 	t2p->SetFillColor(4);
-	//t2p->SetFillStyle(3006);
-	//t2p->Draw("a4");
-	t2p->Draw("L");
+	t2p->SetFillStyle(3006);
+	t2p->Draw("4 ");
+	//t2p->Draw("L");
 
 	/*
 	TGraphErrors* lundG = new TGraphErrors(n,days,lundM,zeros,lundS);
@@ -310,21 +310,21 @@ void LattDiff(){
 	gStyle->SetPadLeftMargin(0.16);
 	*/
 
-	TGraphErrors* t0p = new TGraphErrors(n,days,t0daysMean,zeros,zeros);
-	Int_t lw = 4
-	t0p->SetMaximum(400);
-	t0p->SetMinimum(0);
-	t0p->SetLineColor(2);
-   	t0p->SetLineWidth(lw);
-	t0p->Draw("AL");
-	TGraphErrors* t1p = new TGraphErrors(n,days,t1daysMean,zeros,zeros);
-	t1p->SetLineColor(3);
-   	t1p->SetLineWidth(lw);
-	t1p->Draw("L");
-	TGraphErrors* t2p = new TGraphErrors(n,days,t2daysMean,zeros,zeros);
-	t2p->SetLineColor(4);
-   	t2p->SetLineWidth(lw);
-	t2p->Draw("L");
+	TGraphErrors* t0p2 = new TGraphErrors(n,days,t0daysMean,zeros,zeros);
+	Int_t lw = 4;
+	t0p2->SetMaximum(400);
+	t0p2->SetMinimum(0);
+	t0p2->SetLineColor(2);
+   	t0p2->SetLineWidth(lw);
+	t0p2->Draw("AL");
+	TGraphErrors* t1p2 = new TGraphErrors(n,days,t1daysMean,zeros,zeros);
+	t1p2->SetLineColor(3);
+   	t1p2->SetLineWidth(lw);
+	t1p2->Draw("L");
+	TGraphErrors* t2p2 = new TGraphErrors(n,days,t2daysMean,zeros,zeros);
+	t2p2->SetLineColor(4);
+   	t2p2->SetLineWidth(lw);
+	t2p2->Draw("L");
 	
 	/*
 	TGraphErrors* lundG = new TGraphErrors(n,days,lundM,zeros,zeros);
