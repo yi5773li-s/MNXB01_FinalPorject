@@ -7,6 +7,7 @@
 #include <TCanvas.h>
 #include <vector>
 #include <TGraphErrors.h>
+#include <TLegend.h>
 /*
 gStyle->SetOptStat(0);
 gStyle->SetOptTitle(0);
@@ -156,13 +157,23 @@ void everyDay(string filePath="../clean_data/upsala_clean.dat", Int_t plot=0){
 		gStyle->SetPadLeftMargin(0.16);
 		*/
 		TGraphErrors* g1 = new TGraphErrors(n,days,daysMean,zeros,daysStaDev);
-		g1->SetLineColor(2);
-		g1->SetFillColor(3);
-		g1->Draw("AL");
+		g1->SetTitle("Temperatures over the year for one location");
+		g1->GetXaxis()->SetTitle("Days");
+		g1->GetYaxis()->SetTitle("Temperature [#circC]");
+		g1->SetMaximum(500);
+		g1->SetMinimum(-100);
+		g1->SetFillColor(2);
+		g1->SetFillStyle(3000);
+		g1->Draw("a4 ");
+		TGraphErrors* g1l = new TGraphErrors(n,days,daysMean,zeros,zeros);
+		g1l->SetLineColor(1);
+		g1l->SetLineWidth(2);
+		g1l->Draw("l");
+		
 		c1->SaveAs("every_day_graph_one_location.jpg");
 		
 		TCanvas* c4 = new TCanvas("c1", "every day graph one location histogram", 900, 600);
-		/*
+		
 		gStyle->SetOptStat(0);
 		gStyle->SetOptTitle(0);
 		gStyle->SetTitleSize(0.05, "x");
@@ -173,27 +184,25 @@ void everyDay(string filePath="../clean_data/upsala_clean.dat", Int_t plot=0){
 		gStyle->SetPadRightMargin(0.05);
 		gStyle->SetPadBottomMargin(0.16);
 		gStyle->SetPadLeftMargin(0.16);
-		*/
-		/*
+		
+		
 		TH1I* histED = new TH1I("histED", "Temperature;Day of the year;Temperature[#circC]", 365, 1, 365);
-		for(int bin = 1; bin <= hist->GetNbinsX(); ++bin) {
-			hist->SetBinContent(bin, daysMean[bin-1]);
-			hist->SetBinError(bin, daysStaDev[bin-1]);
+		for(int bin = 1; bin <= histED->GetNbinsX(); ++bin) {
+			histED->SetBinContent(bin, daysMean[bin-1]);
+			histED->SetBinError(bin, daysStaDev[bin-1]);
 		}
-		hist->SetLineColor(2);
-		hist->SetFillColor(3);
-		hist->Draw("E L");
-		*/
+		histED->SetLineColor(2);
+		histED->Draw("E L");
+		TH1I* histEDl = new TH1I("histED", "Temperature;Day of the year;Temperature[#circC]", 365, 1, 365);
+		for(int bin = 1; bin <= histEDl->GetNbinsX(); ++bin) {
+			histEDl->SetBinContent(bin, daysMean[bin-1]);
+		}
+		histEDl->SetLineColor(1);
+		histEDl->SetLineWidth(2);
+		histEDl->Draw("L same");
+		
 		c4->SaveAs("every_day_graph_one_location_histogram.jpg");
 	}
-	/*
-	if (plot == 0){
-		return outputBigM;
-	}
-	if (plot == 2){
-		return outputBigS;
-	}
-	*/
 }
 
 
@@ -260,8 +269,9 @@ void LattDiff(){
 		luleuS[i]=luleuP[1];
 		*/
 	}
+	
 	TCanvas* c2 = new TCanvas("c2", "every day graph multiple locations standard deviation included", 900, 600);
-	/*
+	
 	gStyle->SetOptStat(0);
 	gStyle->SetOptTitle(0);
 	gStyle->SetTitleSize(0.05, "x");
@@ -272,28 +282,41 @@ void LattDiff(){
 	gStyle->SetPadRightMargin(0.05);
 	gStyle->SetPadBottomMargin(0.16);
 	gStyle->SetPadLeftMargin(0.16);
-	*/
-
+	
+	Int_t lw1 = 2;
+	
 	TGraphErrors* t0p = new TGraphErrors(n,days,t0daysMean,zeros,t0daysStaDev);
-	t0p->SetMaximum(400);
-	t0p->SetMinimum(-400);
-	t0p->SetLineColor(1);
+	t0p->SetTitle("Temperatures over the year for different Lattitudes");
+	t0p->GetXaxis()->SetTitle("Days");
+  	t0p->GetYaxis()->SetTitle("Temperature [#circC]");
+	t0p->SetMaximum(500);
+	t0p->SetMinimum(-100);
 	t0p->SetFillColor(2);
  	t0p->SetFillStyle(3004);
 	t0p->Draw("a4 ");
-	//t0p->Draw("AL");
+	
 	TGraphErrors* t1p = new TGraphErrors(n,days,t1daysMean,zeros,t1daysStaDev);
-	t1p->SetLineColor(1);
 	t1p->SetFillColor(3);
 	t1p->SetFillStyle(3005);
 	t1p->Draw("4 ");
-	//t1p->Draw("L");
+	
 	TGraphErrors* t2p = new TGraphErrors(n,days,t2daysMean,zeros,t2daysStaDev);
-	t2p->SetLineColor(1);
 	t2p->SetFillColor(4);
 	t2p->SetFillStyle(3006);
 	t2p->Draw("4 ");
-	//t2p->Draw("L");
+	
+	TGraphErrors* t0pl = new TGraphErrors(n,days,t0daysMean,zeros,zeros);
+	t0pl->SetLineColor(2);
+	t0pl->SetLineWidth(lw1);
+	t0pl->Draw("l");
+	TGraphErrors* t1pl = new TGraphErrors(n,days,t1daysMean,zeros,zeros);
+	t1pl->SetLineColor(3);
+	t1pl->SetLineWidth(lw1);
+	t1pl->Draw("l");
+	TGraphErrors* t2pl = new TGraphErrors(n,days,t2daysMean,zeros,zeros);
+	t2pl->SetLineColor(4);
+	t2pl->SetLineWidth(lw1);
+	t2pl->Draw("l");
 
 	/*
 	TGraphErrors* lundG = new TGraphErrors(n,days,lundM,zeros,lundS);
@@ -303,55 +326,66 @@ void LattDiff(){
 	lundG->SetMaximum(20);
 	lundG->SetMinimum(-4);
 	lundG->SetFillColor(2);
-	lundG->SetLineColor(1);
 	lundG->SetFillStyle(3001)
 	lundG->Draw("a4")
-	//lundG->Draw("AL");
 	
 	TGraphErrors* visbyG = new TGraphErrors(n,days,visbyM,zeros,visbyS);
 	visbyG->SetFillColor(3);
-	visbyG->SetLineColor(1);
 	visbyG->SetFillStyle(3004)
 	visbyG->Draw("4")
-	//visbyG->Draw("L");
 	
 	TGraphErrors* upsalaG = new TGraphErrors(n,days,upsalaM,zeros,upsalaS);
 	upsalaG->SetFillColor(4);
-	upsalaG->SetLineColor(1);
 	upsalaG->SetFillStyle(3005)
 	upsalaG->Draw("4")
-	//upsalaG->Draw("L");
 	
 	TGraphErrors* umeaG = new TGraphErrors(n,days,umeaM,zeros,umeaS);
 	umeaG->SetFillColor(6);
-	umeaG->SetLineColor(1);
 	umeaG->SetFillStyle(3006)
 	umeaG->Draw("4")
-	//umeaG->Draw("L");
 	
 	TGraphErrors* luleuG = new TGraphErrors(n,days,luleuM,zeros,luleuS);
 	luleuG->SetFillColor(28);
-	luleuG->SetLineColor(1);
 	luleuG->SetFillStyle(3007)
 	luleuG->Draw("4")
-	//luleuG->Draw("L");
+	
+	TGraphErrors* lundGl = new TGraphErrors(n,days,lundM,zeros,zeros);
+	lundGl->SetLineColor(4);
+	lundGl->SetLineWidth(lw1);
+	lundGl->Draw("l");
+	TGraphErrors* visbyGl = new TGraphErrors(n,days,visbyM,zeros,zeros);
+	visbyGl->SetLineColor(4);
+	visbyGl->SetLineWidth(lw1);
+	visbyGl->Draw("l");
+	TGraphErrors* upsalaGl = new TGraphErrors(n,days,upsalaM,zeros,zeros);
+	upsalaGl->SetLineColor(4);
+	upsalaGl->SetLineWidth(lw1);
+	upsalaGl->Draw("l");
+	TGraphErrors* umeaGl = new TGraphErrors(n,days,umeaM,zeros,zeros);
+	umeaGl->SetLineColor(4);
+	umeaGl->SetLineWidth(lw1);
+	umeaGl->Draw("l");
+	TGraphErrors* luleuGl = new TGraphErrors(n,days,luleuM,zeros,zeros);
+	luleuGl->SetLineColor(4);
+	luleuGl->SetLineWidth(lw1);
+	luleuGl->Draw("l");
 	*/
 
-	/*
-	auto testL = new TLegend(0.1,0.7,0.48,0.9);
+	
+	TLegend* testL = new TLegend(0.1,0.7,0.48,0.9);
   	testL->AddEntry(t0p,"test0","f");
   	testL->AddEntry(t1p,"test1","f");
   	testL->AddEntry(t2p,"test2","f");
   	testL->Draw();
-	*/
+	
 
 	/*
 	auto Legend = new TLegend(0.1,0.7,0.48,0.9);
- 	Legend->AddEntry(lundG,"Values from lund Latitude = 55.7","f");
-  	Legend->AddEntry(visbyG,"Values from Visby Latitude = 57.7","f");
-  	Legend->AddEntry(upsalaG,"Values from Upsala Latitude = 59.9","f");
-	Legend->AddEntry(umeaG,"Values from Umea Latitude = 63.8","f");
-	Legend->AddEntry(luleuG,"Values from Luleu Latitude = 65.5","f");
+ 	Legend->AddEntry(lundG,"Values from lund Latitude = 55.7#circ","f");
+  	Legend->AddEntry(visbyG,"Values from Visby Latitude = 57.7#circ","f");
+  	Legend->AddEntry(upsalaG,"Values from Upsala Latitude = 59.9#circ","f");
+	Legend->AddEntry(umeaG,"Values from Umea Latitude = 63.8#circ","f");
+	Legend->AddEntry(luleuG,"Values from Luleu Latitude = 65.5#circ","f");
  	Legend->Draw();
 	*/
 
@@ -363,7 +397,7 @@ void LattDiff(){
 	
 	
 	TCanvas* c3 = new TCanvas("c3", "every day graph multiple locations just means", 900, 600);
-	/*
+	
 	gStyle->SetOptStat(0);
 	gStyle->SetOptTitle(0);
 	gStyle->SetTitleSize(0.05, "x");
@@ -374,22 +408,22 @@ void LattDiff(){
 	gStyle->SetPadRightMargin(0.05);
 	gStyle->SetPadBottomMargin(0.16);
 	gStyle->SetPadLeftMargin(0.16);
-	*/
+	
 
 	TGraphErrors* t0p2 = new TGraphErrors(n,days,t0daysMean,zeros,zeros);
-	Int_t lw = 4;
+	Int_t lw2 = 2;
 	t0p2->SetMaximum(400);
 	t0p2->SetMinimum(0);
 	t0p2->SetLineColor(2);
-   	t0p2->SetLineWidth(lw);
+   	t0p2->SetLineWidth(lw2);
 	t0p2->Draw("AL");
 	TGraphErrors* t1p2 = new TGraphErrors(n,days,t1daysMean,zeros,zeros);
 	t1p2->SetLineColor(3);
-   	t1p2->SetLineWidth(lw);
+   	t1p2->SetLineWidth(lw2);
 	t1p2->Draw("L");
 	TGraphErrors* t2p2 = new TGraphErrors(n,days,t2daysMean,zeros,zeros);
 	t2p2->SetLineColor(4);
-   	t2p2->SetLineWidth(lw);
+   	t2p2->SetLineWidth(lw2);
 	t2p2->Draw("L");
 	
 	/*
@@ -423,13 +457,13 @@ void LattDiff(){
    	luleuG2->SetLineWidth(lw);
 	luleuG2->Draw("L");
 	*/
-	/*
-	auto testL = new TLegend(0.1,0.7,0.48,0.9);
-  	testL->AddEntry(t0p,"test0","l");
-  	testL->AddEntry(t1p,"test1","l");
-  	testL->AddEntry(t2p,"test2","l");
-  	testL->Draw();
-	*/
+	
+	TLegend * testL2 = new TLegend(0.1,0.7,0.48,0.9);
+  	testL2->AddEntry(t0p2,"test0","l");
+  	testL2->AddEntry(t1p2,"test1","l");
+  	testL2->AddEntry(t2p2,"test2","l");
+  	testL2->Draw();
+	
 	/*
 	auto Legend2 = new TLegend(0.1,0.7,0.48,0.9);
  	Legend2->AddEntry(lundG2,"Values from lund Latitude = 55.7","l");
@@ -440,6 +474,6 @@ void LattDiff(){
  	Legend2->Draw();
 	*/
 
-	c2->SaveAs("every_day_graph_multiple_locations_just_means.jpg");
+	c3->SaveAs("every_day_graph_multiple_locations_just_means.jpg");
 
 }
