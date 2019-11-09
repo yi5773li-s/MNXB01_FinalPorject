@@ -25,3 +25,6 @@ Reworked everyDay as we no longer need to call it in LattDiff
 7/11/2019
 LattDiff mostly finished will need some testing when I have access to root (tomorow)
 Setup graph stuff in LattDiff to be tested.
+
+9/11/2019
+Added two functions to oneDay and they take different formats of input. oneDayMDI takes a specific day in a specific month as input while oneDay takes a day number (between 1 and 365) as input. 
