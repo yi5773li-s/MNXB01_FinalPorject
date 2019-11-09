@@ -25,3 +25,4 @@ Reworked everyDay as we no longer need to call it in LattDiff
 7/11/2019
 LattDiff mostly finished will need some testing when I have access to root (tomorow)
 Setup graph stuff in LattDiff to be tested.
+
