@@ -260,6 +260,7 @@ void LattDiff(){
 	gStyle->SetPadBottomMargin(0.16);
 	gStyle->SetPadLeftMargin(0.16);
 	
+	Int_t lw = 2;
 	Int_t lw1 = 2;
 	
 
@@ -270,28 +271,28 @@ void LattDiff(){
 	lundG->SetMaximum(20);
 	lundG->SetMinimum(-4);
 	lundG->SetFillColor(2);
-	lundG->SetFillStyle(3001)
-	lundG->Draw("a4")
+	lundG->SetFillStyle(3001);
+	lundG->Draw("a4");
 	
 	TGraphErrors* visbyG = new TGraphErrors(n,days,visbyM,zeros,visbyS);
 	visbyG->SetFillColor(3);
-	visbyG->SetFillStyle(3004)
-	visbyG->Draw("4")
+	visbyG->SetFillStyle(3004);
+	visbyG->Draw("4");
 	
 	TGraphErrors* upsalaG = new TGraphErrors(n,days,upsalaM,zeros,upsalaS);
 	upsalaG->SetFillColor(4);
-	upsalaG->SetFillStyle(3005)
-	upsalaG->Draw("4")
+	upsalaG->SetFillStyle(3005);
+	upsalaG->Draw("4");
 	
 	TGraphErrors* umeaG = new TGraphErrors(n,days,umeaM,zeros,umeaS);
 	umeaG->SetFillColor(6);
-	umeaG->SetFillStyle(3006)
-	umeaG->Draw("4")
+	umeaG->SetFillStyle(3006);
+	umeaG->Draw("4");
 	
 	TGraphErrors* luleuG = new TGraphErrors(n,days,luleuM,zeros,luleuS);
 	luleuG->SetFillColor(28);
-	luleuG->SetFillStyle(3007)
-	luleuG->Draw("4")
+	luleuG->SetFillStyle(3007);
+	luleuG->Draw("4");
 	
 	TGraphErrors* lundGl = new TGraphErrors(n,days,lundM,zeros,zeros);
 	lundGl->SetLineColor(4);
