@@ -277,7 +277,7 @@ void LattDiff(){
 	lundG->GetXaxis()->SetTitle("Days");
   	lundG->GetYaxis()->SetTitle("Temperature [Celsius]");
 	lundG->SetMaximum(20);
-	lundG->SetMinimum(-8);
+	lundG->SetMinimum(-15);
 	lundG->SetFillColor(2);
 	lundG->SetFillStyle(3001);
 	lundG->Draw("a4");
@@ -301,7 +301,7 @@ void LattDiff(){
 	luleuG->SetFillColor(28);
 	luleuG->SetFillStyle(3007);
 	luleuG->Draw("4");
-	
+	/*
 	TGraphErrors* lundGl = new TGraphErrors(n,days,lundM,zeros,zeros);
 	lundGl->SetLineColor(2);
 	lundGl->SetLineWidth(lw1);
@@ -322,9 +322,12 @@ void LattDiff(){
 	luleuGl->SetLineColor(28);
 	luleuGl->SetLineWidth(lw1);
 	luleuGl->Draw("l");
+	*/
 
 	
 	TLegend* Legend = new TLegend(0.1,0.7,0.48,0.9);
+	Legend->SetFillStyle(0);
+	Legend->SetBorderSize(0);
  	Legend->AddEntry(lundG,"Values from lund Latitude = 55.7#circ","f");
   	Legend->AddEntry(visbyG,"Values from Visby Latitude = 57.7#circ","f");
   	Legend->AddEntry(upsalaG,"Values from Upsala Latitude = 59.9#circ","f");
@@ -355,7 +358,7 @@ void LattDiff(){
 	lundG2->GetXaxis()->SetTitle("Days");
   	lundG2->GetYaxis()->SetTitle("Temperature [#circC]");
 	lundG2->SetMaximum(20);
-	lundG2->SetMinimum(-8);
+	lundG2->SetMinimum(-15);
 	lundG2->SetLineColor(2);
    	lundG2->SetLineWidth(lw);
    	//mult2->Add(lundG2);
@@ -392,6 +395,8 @@ void LattDiff(){
 	
 	
 	TLegend* Legend2 = new TLegend(0.1,0.7,0.48,0.9);
+	Legend2->SetFillStyle(0);
+	Legend2->SetBorderSize(0);
  	Legend2->AddEntry(lundG2,"Values from lund Latitude = 55.7","l");
   	Legend2->AddEntry(visbyG2,"Values from Visby Latitude = 57.7","l");
   	Legend2->AddEntry(upsalaG2,"Values from Upsala Latitude = 59.9","l");
