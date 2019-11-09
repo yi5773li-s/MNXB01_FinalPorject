@@ -22,32 +22,98 @@ gStyle->SetPadLeftMargin(0.16);
 Int_t n=365;
 Double_t outputMS[2];
 
-Double_t * oneDay(string filePath, Int_t day, Int_t plot=0){
-
-
-
-
-
-
-
-
-	Double_t tday = (Double_t)day;
-	if (filePath == "test0"){
-		outputMS[0]=tday;
-		outputMS[1]=tday/3;
-		return outputMS;
+Double_t* oneDayMDI(string filePath, Int_t month, Int_t day, Int_t plot=0)
+{
+	// create a histogram
+	TH1I* hist = new TH1I("temperature", "Temperature;Temperature[#circC];Entries", 300, -20, 40);
+	hist->SetFillColor(kRed + 1);
+	
+	Double_t yeart;
+	Double_t montht;
+	Double_t dayt;
+	Double_t tempt;
+	
+	vector<Double_t> y;
+	vector<Double_t> t;
+	vector<Double_t> average;
+	
+	// open data file
+	ifstream datafile(filePath);
+	
+	
+	while (datafile >> yeart >> montht >> dayt >> tempt)
+	{
+		
+		if (montht == month and dayt == day)
+		{
+			y.push_back(yeart);
+			t.push_back(tempt);
+		}
 	}
-	else if (filePath == "test1"){
-		outputMS[0]=100+day/1.4;
-		outputMS[1]=tday/3;
-		return outputMS;
+	
+	Int_t size = y.size();
+	
+	for (Int_t i = 0; i < size; i++)
+	{
+		Double_t temp = t[i];
+		Double_t test = y[i];
+		Int_t counter = 1;
+		
+		for (Int_t j = i+1; j < size; j++)
+		{
+			if (test == y[j])
+			{
+				temp += t[j];
+				counter++;
+				i++;
+			}
+		}
+		
+		//average.push_back(temp/counter);
+		hist->Fill(temp/counter);
 	}
-	else if (filePath == "test2"){
-		outputMS[0]=150;
-		outputMS[1]=tday/2;
-		return outputMS;
+		
+	// close the file
+	datafile.close();
+	
+	if (plot==1)
+	{
+		hist->Draw();
 	}
+	else
+	{
+		 outputMS[0] = hist->GetMean();
+	     outputMS[1] = hist->GetRMS();
+	
+		 return outputMS;
+	}	
 }
+
+Double_t* oneDay(string filePath, Int_t dayNo, Int_t plot=0)
+{
+	int days_in_month[13] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	
+	Int_t month=0;
+	Int_t date=0;
+	
+	for (Int_t i = 0; i < 13; i++)
+	{
+		if (dayNo <= days_in_month[i+1])
+		{
+			date = dayNo;
+			month = i+1;
+			break;
+		}
+		
+		else
+		{
+			dayNo -= days_in_month[i+1];
+		}
+	}
+	
+	return oneDayMDI(filePath, month, date, plot);
+}
+
 
 void everyDay(string filePath="../clean_data/upsala_clean.dat", Int_t plot=0){
 	Double_t *p;
