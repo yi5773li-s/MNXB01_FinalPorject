@@ -12,7 +12,11 @@
 Int_t n=365;
 Double_t outputMS[2];
 
-Double_t* oneDayMDI(string filePath="../clean_data/lund_clean.dat", Int_t month=1, Int_t day=1, Int_t plot=0)
+using std::vector;
+using std::string;
+using std::ifstream;
+
+Double_t* oneDayMDI(string filePath, Int_t month, Int_t day, Int_t plot=0)
 {
 	// create a histogram
 	TH1I* hist = new TH1I("temperature", "Temperature;Temperature[#circC];Entries", 300, -20, 40);
@@ -28,7 +32,7 @@ Double_t* oneDayMDI(string filePath="../clean_data/lund_clean.dat", Int_t month=
 	vector<Double_t> average;
 	
 	// open data file
-	ifstream datafile(filePath.c_str());
+	ifstream datafile(filePath);
 	
 	
 	while (datafile >> yeart >> montht >> dayt >> tempt)
@@ -105,77 +109,93 @@ Double_t* oneDay(string filePath, Int_t dayNo, Int_t plot=0)
 }
 
 
-void everyDay(string filePath="../clean_data/uppsala_clean.dat"){
+void everyDay(string filePath="../clean_data/upsala_clean.dat", Int_t plot=0){
 	Double_t *p;
 	Double_t daysMean[n],daysStaDev[n],days[n],zeros[n];
+	//vector<Double_t> daysMean;
+	//vector<Double_t> daysStaDev;
+	//vector<Int_t> days;
+	//vector<Int_t> zeros;
 	for(Int_t i = 0; i < n; i++){
 		p = oneDay(filePath,i,0);
 		daysMean[i]=p[0];
 		daysStaDev[i]=p[1];
 		days[i]=i+1;
 		zeros[i]=0;
+		//daysMean.push_back(p[0]);
+		//daysStaDev.push_back(p[1]);
+		//days.push_back(i);
+		//zeros.push_back(0);
+		/*
+		if (plot == 1){
+			outputBigM[i] = daysMean[i];
+		}
+		if (plot == 2){
+			outputBigS[i] = daysStaDev[i];
+		}
+		*/
 	}
-	
-	TCanvas* c1 = new TCanvas("c1", "every day graph one location", 900, 600);
-	
-	gStyle->SetOptStat(0);
-	gStyle->SetOptTitle(0);
-	gStyle->SetTitleSize(0.05, "x");
-	gStyle->SetTitleSize(0.05, "y");
-	gStyle->SetLabelSize(0.05, "x");
-	gStyle->SetLabelSize(0.05, "y");
-	gStyle->SetPadTopMargin(0.05);
-	gStyle->SetPadRightMargin(0.05);
-	gStyle->SetPadBottomMargin(0.16);
-	gStyle->SetPadLeftMargin(0.16);
-	
-	TGraphErrors* g1 = new TGraphErrors(n,days,daysMean,zeros,daysStaDev);
-	g1->SetTitle("Temperatures over the year for one location");
-	g1->GetXaxis()->SetTitle("Days");
-	g1->GetYaxis()->SetTitle("Temperature [#circC]");
-	g1->SetMaximum(20);
-	g1->SetMinimum(-10);
-	g1->SetFillColor(2);
-	g1->SetFillStyle(3000);
-	g1->Draw("a4 ");
-	TGraphErrors* g1l = new TGraphErrors(n,days,daysMean,zeros,zeros);
-	g1l->SetLineColor(1);
-	g1l->SetLineWidth(2);
-	g1l->Draw("l");
+	if (plot == 0){
+		TCanvas* c1 = new TCanvas("c1", "every day graph one location", 900, 600);
+		/*
+		gStyle->SetOptStat(0);
+		gStyle->SetOptTitle(0);
+		gStyle->SetTitleSize(0.05, "x");
+		gStyle->SetTitleSize(0.05, "y");
+		gStyle->SetLabelSize(0.05, "x");
+		gStyle->SetLabelSize(0.05, "y");
+		gStyle->SetPadTopMargin(0.05);
+		gStyle->SetPadRightMargin(0.05);
+		gStyle->SetPadBottomMargin(0.16);
+		gStyle->SetPadLeftMargin(0.16);
+		*/
+		TGraphErrors* g1 = new TGraphErrors(n,days,daysMean,zeros,daysStaDev);
+		g1->SetTitle("Temperatures over the year for one location");
+		g1->GetXaxis()->SetTitle("Days");
+		g1->GetYaxis()->SetTitle("Temperature [#circC]");
+		g1->SetMaximum(500);
+		g1->SetMinimum(-100);
+		g1->SetFillColor(2);
+		g1->SetFillStyle(3000);
+		g1->Draw("a4 ");
+		TGraphErrors* g1l = new TGraphErrors(n,days,daysMean,zeros,zeros);
+		g1l->SetLineColor(1);
+		g1l->SetLineWidth(2);
+		g1l->Draw("l");
 		
-	c1->SaveAs("every_day_graph_one_location.jpg");
-	
-	TCanvas* c4 = new TCanvas("c1", "every day graph one location histogram", 900, 600);
+		c1->SaveAs("every_day_graph_one_location.jpg");
 		
-	gStyle->SetOptStat(0);
-	gStyle->SetOptTitle(0);
-	gStyle->SetTitleSize(0.05, "x");
-	gStyle->SetTitleSize(0.05, "y");
-	gStyle->SetLabelSize(0.05, "x");
-	gStyle->SetLabelSize(0.05, "y");
-	gStyle->SetPadTopMargin(0.05);
-	gStyle->SetPadRightMargin(0.05);
-	gStyle->SetPadBottomMargin(0.16);
-	gStyle->SetPadLeftMargin(0.16);
+		TCanvas* c4 = new TCanvas("c1", "every day graph one location histogram", 900, 600);
+		
+		gStyle->SetOptStat(0);
+		gStyle->SetOptTitle(0);
+		gStyle->SetTitleSize(0.05, "x");
+		gStyle->SetTitleSize(0.05, "y");
+		gStyle->SetLabelSize(0.05, "x");
+		gStyle->SetLabelSize(0.05, "y");
+		gStyle->SetPadTopMargin(0.05);
+		gStyle->SetPadRightMargin(0.05);
+		gStyle->SetPadBottomMargin(0.16);
+		gStyle->SetPadLeftMargin(0.16);
 		
 		
-	TH1I* histED = new TH1I("histED", "Temperature;Day of the year;Temperature[#circC]", 365, 1, 365);
-	for(int bin = 1; bin <= histED->GetNbinsX(); ++bin) {
-		histED->SetBinContent(bin, daysMean[bin-1]);
-		histED->SetBinError(bin, daysStaDev[bin-1]);
+		TH1I* histED = new TH1I("histED", "Temperature;Day of the year;Temperature[#circC]", 365, 1, 365);
+		for(int bin = 1; bin <= histED->GetNbinsX(); ++bin) {
+			histED->SetBinContent(bin, daysMean[bin-1]);
+			histED->SetBinError(bin, daysStaDev[bin-1]);
+		}
+		histED->SetLineColor(2);
+		histED->Draw("E L");
+		TH1I* histEDl = new TH1I("histED", "Temperature;Day of the year;Temperature[#circC]", 365, 1, 365);
+		for(int bin = 1; bin <= histEDl->GetNbinsX(); ++bin) {
+			histEDl->SetBinContent(bin, daysMean[bin-1]);
+		}
+		histEDl->SetLineColor(1);
+		histEDl->SetLineWidth(2);
+		histEDl->Draw("L same");
+		
+		c4->SaveAs("every_day_graph_one_location_histogram.jpg");
 	}
-	histED->SetLineColor(2);
-	histED->Draw("E L");
-	TH1I* histEDl = new TH1I("histED", "Temperature;Day of the year;Temperature[#circC]", 365, 1, 365);
-	for(int bin = 1; bin <= histEDl->GetNbinsX(); ++bin) {
-		histEDl->SetBinContent(bin, daysMean[bin-1]);
-	}
-	histEDl->SetLineColor(1);
-	histEDl->SetLineWidth(2);
-	histEDl->Draw("L same");
-		
-	c4->SaveAs("every_day_graph_one_location_histogram.jpg");
-	
 }
 
 
@@ -220,7 +240,7 @@ void LattDiff(){
 		visbyP = oneDay("../clean_data/visby_clean.dat",i,0);
 		visbyM[i]=visbyP[0];
 		visbyS[i]=visbyP[1];
-		upsalaP = oneDay("../clean_data/uppsala_clean.dat",i,0);
+		upsalaP = oneDay("../clean_data/upsala_clean.dat",i,0);
 		upsalaM[i]=upsalaP[0];
 		upsalaS[i]=upsalaP[1];
 		umeaP = oneDay("../clean_data/umea_clean.dat",i,0);
@@ -244,7 +264,6 @@ void LattDiff(){
 	gStyle->SetPadBottomMargin(0.16);
 	gStyle->SetPadLeftMargin(0.16);
 	
-	Int_t lw = 2;
 	Int_t lw1 = 2;
 	
 
@@ -300,7 +319,7 @@ void LattDiff(){
 	luleuGl->Draw("l");
 
 	
-	TLegend* Legend = new TLegend(0.1,0.7,0.48,0.9);
+	auto Legend = new TLegend(0.1,0.7,0.48,0.9);
  	Legend->AddEntry(lundG,"Values from lund Latitude = 55.7#circ","f");
   	Legend->AddEntry(visbyG,"Values from Visby Latitude = 57.7#circ","f");
   	Legend->AddEntry(upsalaG,"Values from Upsala Latitude = 59.9#circ","f");
@@ -308,7 +327,7 @@ void LattDiff(){
 	Legend->AddEntry(luleuG,"Values from Luleu Latitude = 65.5#circ","f");
  	Legend->Draw();
 
-	c2->SaveAs("every_day_graph_multiple_locations_standard_deviations_included.pdf");
+	c2->SaveAs("every_day_graph_multiple_locations_standard_deviations_included.jpg");
 	
 	
 	
@@ -336,6 +355,7 @@ void LattDiff(){
 	lundG2->SetMaximum(20);
 	lundG2->SetMinimum(-4);
 	lundG2->SetLineColor(2);
+        int lw = 2;
    	lundG2->SetLineWidth(lw);
 	lundG2->Draw("AL");
 	
@@ -359,7 +379,7 @@ void LattDiff(){
    	luleuG2->SetLineWidth(lw);
 	luleuG2->Draw("L");
 	
-	TLegend* Legend2 = new TLegend(0.1,0.7,0.48,0.9);
+	auto Legend2 = new TLegend(0.1,0.7,0.48,0.9);
  	Legend2->AddEntry(lundG2,"Values from lund Latitude = 55.7","l");
   	Legend2->AddEntry(visbyG2,"Values from Visby Latitude = 57.7","l");
   	Legend2->AddEntry(upsalaG2,"Values from Upsala Latitude = 59.9","l");
@@ -367,7 +387,178 @@ void LattDiff(){
 	Legend2->AddEntry(luleuG2,"Values from Luleu Latitude = 65.5","l");
  	Legend2->Draw();
 
-	c3->SaveAs("every_day_graph_multiple_locations_just_means.pdf");
-	
+	c3->SaveAs("every_day_graph_multiple_locations_just_means.jpg");
 
+}
+
+#include <string.h>
+#include <stdio.h>
+#include <TDatime.h>
+#include <TStyle.h>
+#include <TPaveStats.h>
+
+#define BORAS "../MNXB01-project/datasets/smhi-opendata_Boras.csv"
+#define FALSTERBO "../MNXB01-project/datasets/smhi-opendata_Falsterbo.csv"
+#define FALUN "../MNXB01-project/datasets/smhi-opendata_Falun.csv"
+#define KARLSTAD "../MNXB01-project/datasets/smhi-openda_Karlstad.csv"
+#define LULEA "../MNXB01-project/datasets/smhi-opendata_Lulea.csv"
+#define LUND "../MNXB01-project/datasets/smhi-opendata_Lund.csv"
+#define SODERARM "../MNXB01-project/datasets/smhi-opendata_Soderarm.csv"
+#define UMEA "../MNXB01-project/datasets/smhi-opendata_Umea.csv"
+#define UPPSALA "../MNXB01-project/datasets/uppsala_tm_1722-2013.dat"
+#define VISBY "../MNXB01-project/datasets/smhi-opendata_Visby.csv"
+
+#define Y2S 31556952
+
+using std::transform;
+
+int getTemperature(string loc = "lund")
+{
+    transform(loc.begin(), loc.end(), loc.begin(), [](unsigned char chr){return std::tolower(chr);});
+    char fileName[1024];
+    if (loc == "lund")
+    {
+        strcpy(fileName, LUND);
+    }
+    else if (loc == "boras")
+    {
+        strcpy(fileName, BORAS);
+    }
+    else if (loc == "falsterbo")
+    {
+        strcpy(fileName, FALSTERBO);
+    }
+    else if (loc == "falun")
+    {
+        strcpy(fileName, FALUN);
+    }
+    else if (loc == "karlstad")
+    {
+        strcpy(fileName, KARLSTAD);
+    }
+    else if (loc == "lulea")
+    {
+        strcpy(fileName, LULEA);
+    }
+    else if (loc == "soderarm")
+    {
+        strcpy(fileName, SODERARM);
+    }
+    else if (loc == "umea")
+    {
+        strcpy(fileName, UMEA);
+    }
+    else if (loc == "uppsala")
+    {
+        strcpy(fileName, UPPSALA);
+    }
+    else if (loc == "visby")
+    {
+        strcpy(fileName, VISBY);
+    }
+    else
+    {
+        return -1;
+    }
+    int year, month, day, hour;
+    double tempr;
+
+    FILE* inputFile = fopen(fileName, "r");
+    char line[1024];
+    int lineNumber = 0;
+    vector<double> vDate;
+    vector<double> vTempr;
+    while (fgets(line, sizeof(line), inputFile))
+    {
+        if(loc != "uppsala")
+        {
+            if (lineNumber < 15)
+            {
+                printf("%2i:%s\n", lineNumber, line);
+            }
+            if (lineNumber > 11)
+            {
+                sscanf(line, "%4d-%2d-%2d;%2d:%*2d:%*2d;%lf", &year, &month, &day, &hour, &tempr);
+                if (lineNumber%1000 == 0)
+                {
+                    printf("%d-%d-%d %d:%d:%d > %f\n", year, month, day, hour, 0, 0, tempr);
+                }
+                //TDatime dateBuffer(year, month, day, hour, 0, 0);
+                double dateBuffer = Y2S*(double)(year - 1970) + Y2S*(double)month/12.0 
+                    + Y2S*(double)day/365.2425 + Y2S*(double)hour/8765.82; 
+                vDate.push_back(dateBuffer);
+                vTempr.push_back(tempr);
+            }
+        }
+        else if (loc == "uppsala")
+        {
+            {
+                sscanf(line, "%d %d %d %*f %lf", &year, &month, &day, &tempr);
+                double dateBuffer = Y2S*(double)(year - 1970) + Y2S*(double)month/12.0 
+                    + Y2S*(double)day/365.2425; 
+                vDate.push_back(dateBuffer);
+                vTempr.push_back(tempr);
+            }
+        }
+        lineNumber++;
+    }
+
+    TGraph* grTempr = new TGraph((int)vTempr.size(), &vDate[0], &vTempr[0]);
+    grTempr->SetLineColor(kBlue);
+    grTempr->SetTitle("");
+    grTempr->SetName("grTempr");
+    
+    TCanvas* cnTempr = new TCanvas("cnTempr", "cnTempr", 900, 600);
+    cnTempr->cd();
+    grTempr->Draw("AL");
+
+    grTempr->GetXaxis()->SetTimeDisplay(1);
+    grTempr->GetXaxis()->SetNdivisions(503);
+    grTempr->GetXaxis()->SetTimeFormat("%Y-%m-%d %H:%M");
+    grTempr->GetXaxis()->SetTimeOffset(0, "gmt");
+    grTempr->GetYaxis()->SetTitle("Temperature, #circC");
+    grTempr->GetXaxis()->SetTitle("Date, YYYY-MM-DD hh:mm");
+    grTempr->GetYaxis()->CenterTitle();
+    grTempr->GetXaxis()->CenterTitle();
+    cnTempr->Modified();
+
+    gStyle->SetOptFit(1110);
+    TF1* fitPol1 = new TF1("fitPol1", "[0] + [1]*x", vDate[0], vDate[vDate.size() - 1]);
+    grTempr->Fit("fitPol1", "R");
+    double pol0 = fitPol1->GetParameter(0);
+    double pol1 = fitPol1->GetParameter(1);
+    fitPol1->SetParameter(0, pol0);
+    fitPol1->SetParameter(1, pol1);
+    fitPol1->SetLineColor(kRed);
+    fitPol1->SetLineWidth(2);
+    cnTempr->Update();
+
+    char dataName[128];
+    sprintf(dataName, "Temperature in the %s area", loc.c_str());
+    TLegend* aLegend = new TLegend(0.1, 0.7, 0.4, 0.9);
+    aLegend->AddEntry("grTempr", dataName);
+    aLegend->AddEntry("fitPol1", "Linear fit");
+    aLegend->Draw();
+
+    TPaveStats* fitStats = (TPaveStats*)(grTempr->FindObject("stats"));
+    fitStats->SetX1NDC(0.6);
+    fitStats->SetY1NDC(0.7);
+    fitStats->SetX2NDC(0.9);
+    fitStats->SetY2NDC(0.9);
+
+    grTempr->GetYaxis()->SetRangeUser(-35, 60);
+
+    cnTempr->Modified();
+
+
+    char pdfName[128];
+    sprintf(pdfName, "temperature_%s.pdf", loc.c_str());
+    cnTempr->SaveAs(pdfName);
+    
+    grTempr->GetXaxis()->SetRangeUser(vDate[(int)(0.4*vDate.size())], vDate[(int)(0.5*vDate.size())]);
+    char pdfNameZoomed[128];
+    sprintf(pdfNameZoomed, "temperature_%s_zoomed.pdf", loc.c_str());
+    cnTempr->SaveAs(pdfNameZoomed);
+
+    return 0;
 }
