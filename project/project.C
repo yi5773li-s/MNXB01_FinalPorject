@@ -261,7 +261,7 @@ void everyDay(string filePath="../clean_data/uppsala_clean.dat"){
 	g1->GetYaxis()->SetTitle("Temperature [#circC]");
 	g1->SetMaximum(20);
 	g1->SetMinimum(-10);
-	g1->SetFillColor(2);
+	g1->SetFillColor(4);
 	g1->SetFillStyle(3000);
 	g1->Draw("a4 ");
 	TGraphErrors* g1l = new TGraphErrors(n,days,daysMean,zeros,zeros);
@@ -290,7 +290,7 @@ void everyDay(string filePath="../clean_data/uppsala_clean.dat"){
 		histED->SetBinContent(bin, daysMean[bin-1]);
 		histED->SetBinError(bin, daysStaDev[bin-1]);
 	}
-	histED->SetLineColor(2);
+	histED->SetLineColor(4);
 	histED->Draw("E L");
 	TH1I* histEDl = new TH1I("histED", "Temperature;Day of the year;Temperature[#circC]", 365, 1, 365);
 	for(int bin = 1; bin <= histEDl->GetNbinsX(); ++bin) {
@@ -464,8 +464,7 @@ void LattDiff(){
   	lundG2->GetYaxis()->SetTitle("Temperature [#circC]");
 	lundG2->SetMaximum(20);
 	lundG2->SetMinimum(-15);
-	lundG2->SetLineColor(2);
-   	lundG2->SetLineWidth(lw);
+	lundG2->SetLineColor(2)		lundG2->SetLineWidth(lw);
    	//mult2->Add(lundG2);
 	lundG2->Draw("AL");
 	//mult2->Add(lundG2,"l");
