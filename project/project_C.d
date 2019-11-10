@@ -37,5 +37,8 @@
 ./project_C.so: /usr/include/root/TGraphErrors.h /usr/include/root/TGraph.h
 ./project_C.so: /usr/include/root/TLegend.h /usr/include/root/TPave.h
 ./project_C.so: /usr/include/root/TBox.h /usr/include/root/TMultiGraph.h
+./project_C.so: /usr/include/root/TDatime.h /usr/include/root/TPaveStats.h
+./project_C.so: /usr/include/root/TPaveText.h /usr/include/root/TText.h
+./project_C.so: /usr/include/root/TLine.h
 ./project_C.so: /usr/include/root/cintdictversion.h /usr/include/root/RVersion.h
 project_C__ROOTBUILDVERSION= 5.34/30
