@@ -208,14 +208,19 @@ void WarmColdDay(string filePath="../clean_data/uppsala_clean.dat")
 		}
 
 		Int_t date = td[indexMax];
-		if (tm[indexMax]!=2 and td[indexMax] !=29)
+		if (tm[indexMax]==2 and td[indexMax] ==29)
+		{
+		}
+		else
 		{
 			for (Int_t s = tm[indexMax]; s>0; s--)
 			{
 				date += days_in_month[s-1];
 			}
+			warm->Fill(date);
 		}
-		warm->Fill(date);
+		
+		
 
 		date = td[indexMin];
 		if (tm[indexMin]!=2 and td[indexMin] !=29)
@@ -269,7 +274,7 @@ void everyDay(string filePath="../clean_data/uppsala_clean.dat"){
 	g1l->SetLineWidth(2);
 	g1l->Draw("l");
 
-	c1->SaveAs("every_day_graph_one_location.jpg");
+	c1->SaveAs("every_day_graph_one_location.pdf");
 
 	TCanvas* c4 = new TCanvas("c1", "every day graph one location histogram", 900, 600);
 
@@ -300,7 +305,7 @@ void everyDay(string filePath="../clean_data/uppsala_clean.dat"){
 	histEDl->SetLineWidth(2);
 	histEDl->Draw("L same");
 
-	c4->SaveAs("every_day_graph_one_location_histogram.jpg");
+	c4->SaveAs("every_day_graph_one_location_histogram.pdf");
 
 }
 
@@ -514,7 +519,7 @@ void LattDiff(){
 
 
 }
-
+/*
 #include <string.h>
 #include <stdio.h>
 #include <TDatime.h>
@@ -686,3 +691,4 @@ int getTemperature(string loc = "lund")
 
     return 0;
 }
+*/
