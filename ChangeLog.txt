@@ -1,4 +1,4 @@
-(the project file has three functions oneDay, everyDay and LattDiff)
+(the project file has six functions oneDayMDI, oneDay, WarmColdDay, everyDay, LattDiff and getTemperature)
 
 6/11/2019
 First meeting, Added Workplan and Changelog, filed in workplan
@@ -28,5 +28,10 @@ Setup graph stuff in LattDiff to be tested.
 
 
 9/11/2019
-Added two functions to oneDay and they take different formats of input. oneDayMDI takes a specific day in a specific month as input while oneDay takes a day number (between 1 and 365) as input. 
+Added two functions to oneDay and they take different formats of input. oneDayMDI takes a specific day in a specific month as input while oneDay takes a day number (between 1 and 365) as input.
 
+9/11/2019
+Coded, tested, Completed and added to code: getTemperature
+
+9/11/2019
+Coded, tested, Completed and added to code: WarmColdDay
