@@ -9,6 +9,13 @@
 #include <TGraphErrors.h>
 #include <TLegend.h>
 #include <TMultiGraph.h>
+#include <TStyle.h>
+#include <TPaveStats.h>
+#include <string.h>
+
+using std::string;
+using std::vector;
+using std::ifstream;
 
 Int_t n=365;
 Double_t outputMS[2];
@@ -98,6 +105,12 @@ Double_t* oneDayMDI(string filePath="../clean_data/lund_clean.dat", Int_t month=
 
 		return outputMS;
 	}
+
+        //since the function has to return double*, in case of plot == 1 we return zero
+        outputMS[0] = 0.0;
+        outputMS[1] = 0.0;
+
+        return outputMS;
 }
 
 
@@ -126,13 +139,47 @@ Double_t* oneDay(string filePath, Int_t dayNo, Int_t plot=0)
 	return oneDayMDI(filePath, month, date, plot);
 }
 
-void WarmColdDay(string filePath="../clean_data/uppsala_clean.dat")
+#define LULEA_CLEAN "../clean_data/lulea_clean.dat"
+#define LUND_CLEAN "../clean_data/lund_clean.dat"
+#define UMEA_CLEAN "../clean_data/umea_clean.dat"
+#define UPPSALA_CLEAN "../clean_data/uppsala_clean.dat"
+#define VISBY_CLEAN "../clean_data/visby_clean.dat"
+
+int WarmColdDay(string loc = "uppsala")
 {
-	TH1I* warm = new TH1I("temperature", "Warmest;Day of year;Entries", 300, 0, 365);
+    transform(loc.begin(), loc.end(), loc.begin(), [](unsigned char chr){return std::tolower(chr);});
+    char fileName[1024];
+    if (loc == "lund")
+    {
+        strcpy(fileName, LUND_CLEAN);
+    }
+    else if (loc == "lulea")
+    {
+        strcpy(fileName, LULEA_CLEAN);
+    }
+    else if (loc == "umea")
+    {
+        strcpy(fileName, UMEA_CLEAN);
+    }
+    else if (loc == "uppsala")
+    {
+        strcpy(fileName, UPPSALA_CLEAN);
+    }
+    else if (loc == "visby")
+    {
+        strcpy(fileName, VISBY_CLEAN);
+    }
+    else
+    {
+        return -1;
+    }
+	TH1D* warm = new TH1D("temperature", ";Day of year;Entries", 3*365, -365, 730);
 	warm->SetFillColor(kRed + 1);
 
-	TH1I* cold = new TH1I("temperature", "Coldest;Day of year;Entries", 365, 1, 365);
+	TH1D* cold = new TH1D("temperature", "Coldest;Day of year;Entries", 730, 1, 2*365);
 	cold->SetFillColor(kBlue + 1);
+	TH1D* cold_copy = new TH1D("temperature", "Coldest;Day of year;Entries", 730, -365, 365);
+	cold_copy->SetFillColor(kBlue + 1);
 
 
 	int days_in_month[13] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
@@ -149,7 +196,7 @@ void WarmColdDay(string filePath="../clean_data/uppsala_clean.dat")
 	vector<Double_t> average;
 
 	// open data file
-	ifstream datafile(filePath.c_str());
+	ifstream datafile(fileName);
 
 	while (datafile >> yeart >> montht >> dayt >> tempt)
 	{
@@ -208,7 +255,7 @@ void WarmColdDay(string filePath="../clean_data/uppsala_clean.dat")
 		}
 
 		Int_t date = td[indexMax];
-		if (tm[indexMax]==2 and td[indexMax] ==29)
+		if (tm[indexMax]==2 && td[indexMax] ==29)
 		{
 		}
 		else
@@ -223,17 +270,87 @@ void WarmColdDay(string filePath="../clean_data/uppsala_clean.dat")
 		
 
 		date = td[indexMin];
-		if (tm[indexMin]!=2 and td[indexMin] !=29)
+		if (tm[indexMin] == 2 && td[indexMin] == 29)
 		{
+		}
+                else
+                {
 			for (Int_t s = tm[indexMin]; s>0; s--)
 			{
 				date += days_in_month[s-1];
 			}
-		}
-		cold->Fill(date);
+                        if (date < 180)
+                        {
+		            cold->Fill(date + 365);
+		            cold_copy->Fill(date);
+                        }
+                        else
+                        {
+                            cold->Fill(date);
+		            cold_copy->Fill(date - 365);
+                        }
+                }
+
+                ty.clear();
+                tm.clear();
+                td.clear();
 	}
-	warm->Draw();
+
+        TF1* gaus_cold1 = new TF1("gaus_cold1", "gaus", 180, 180 + 365);
+        TF1* gaus_cold2 = new TF1("gaus_cold2", "gaus", -180, -180 + 365);
+        TF1* gaus_warm = new TF1("gaus_warm", "gaus", 0, 365);
+
+        gaus_warm->SetLineColor(kBlue);
+        gaus_cold1->SetLineColor(kRed);
+        gaus_cold2->SetLineColor(kRed);
+
+        warm->Fit("gaus_warm", "R");
+        cold->Fit("gaus_cold1", "R");
+        cold_copy->Fit("gaus_cold2", "R");
+
+        TCanvas* cnCold = new TCanvas("cnCold", "cnCold", 900, 600);
+        TCanvas* cnWarmCold = new TCanvas("cnWarmCold", "cnWarmCold", 900, 600);
+        gStyle->SetOptStat(0);
+        gStyle->SetOptFit(1110);
+
+        cnCold->cd();
+	cold_copy->Draw();
+        cnCold->Update();
+
+        cnWarmCold->cd();
+        warm->Draw();
 	cold->Draw("same");
+	cold_copy->Draw("same");
+
+        warm->GetXaxis()->CenterTitle();
+        warm->GetYaxis()->CenterTitle();
+        warm->GetXaxis()->SetRangeUser(0, 365);
+        warm->GetYaxis()->SetRangeUser(0, 1.5*TMath::Max(warm->GetMaximum(), cold_copy->GetMaximum()));
+
+        cnWarmCold->Modified();
+        cnWarmCold->Update();
+    
+        TPaveStats* stats1 = (TPaveStats*)(warm->FindObject("stats"));
+        stats1->SetX1NDC(.1);
+        stats1->SetX2NDC(.4);
+        stats1->SetY1NDC(.75);
+        stats1->SetY2NDC(.9);
+        stats1->SetTextColor(kBlue);
+        cnWarmCold->Modified();
+
+        TPaveStats* stats2 = (TPaveStats*)(cold_copy->FindObject("stats"));
+        stats2->SetX1NDC(.6);
+        stats2->SetX2NDC(.9);
+        stats2->SetY1NDC(.75);
+        stats2->SetY2NDC(.9);
+        stats2->SetTextColor(kRed);
+        cnWarmCold->Modified();
+
+        char pdfName[128];
+        sprintf(pdfName, "cold_warm_day_%s.pdf", loc.c_str());
+        cnWarmCold->SaveAs(pdfName);
+        
+        return 0;
 }
 
 void everyDay(string filePath="../clean_data/uppsala_clean.dat"){
@@ -520,11 +637,8 @@ void LattDiff(){
 
 }
 /*
-#include <string.h>
 #include <stdio.h>
 #include <TDatime.h>
-#include <TStyle.h>
-#include <TPaveStats.h>
 
 #define BORAS "../MNXB01-project/datasets/smhi-opendata_Boras.csv"
 #define FALSTERBO "../MNXB01-project/datasets/smhi-opendata_Falsterbo.csv"
