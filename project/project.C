@@ -664,12 +664,14 @@ void LattDiff(){
 }
 
 
+=======
+
 #include <string.h>
 
 
 
+
 #include <stdio.h>
-#include <TDatime.h>
 
 #define BORAS "../MNXB01-project/datasets/smhi-opendata_Boras.csv"
 #define FALSTERBO "../MNXB01-project/datasets/smhi-opendata_Falsterbo.csv"
@@ -682,7 +684,9 @@ void LattDiff(){
 #define UPPSALA "../MNXB01-project/datasets/uppsala_tm_1722-2013.dat"
 #define VISBY "../MNXB01-project/datasets/smhi-opendata_Visby.csv"
 
+//#define DEBUG
 #define Y2S 31556952
+#define FALUN_OFFSET 10958 // amount of corupted entries for falun data
 
 using std::transform;
 
@@ -734,6 +738,7 @@ int getTemperature(string loc = "lund")
     {
         return -1;
     }
+
     int year, month, day, hour;
     double tempr;
 
@@ -746,18 +751,31 @@ int getTemperature(string loc = "lund")
     {
         if(loc != "uppsala")
         {
+#ifdef DEBUG
             if (lineNumber < 15)
             {
                 printf("%2i:%s\n", lineNumber, line);
             }
-            if (lineNumber > 11)
+#endif /*DEBUG*/
+            int offset;
+            if (loc != "falun")
+            {
+                offset = 0;
+            }
+            else
+            {
+                offset = FALUN_OFFSET;
+            }
+
+            if (lineNumber > 11 + offset)
             {
                 sscanf(line, "%4d-%2d-%2d;%2d:%*2d:%*2d;%lf", &year, &month, &day, &hour, &tempr);
+#ifdef DEBUG
                 if (lineNumber%1000 == 0)
                 {
                     printf("%d-%d-%d %d:%d:%d > %f\n", year, month, day, hour, 0, 0, tempr);
                 }
-                //TDatime dateBuffer(year, month, day, hour, 0, 0);
+#endif /*DEBUG*/
                 double dateBuffer = Y2S*(double)(year - 1970) + Y2S*(double)month/12.0
                     + Y2S*(double)day/365.2425 + Y2S*(double)hour/8765.82;
                 vDate.push_back(dateBuffer);
@@ -798,13 +816,9 @@ int getTemperature(string loc = "lund")
 
     gStyle->SetOptFit(1110);
     TF1* fitPol1 = new TF1("fitPol1", "[0] + [1]*x", vDate[0], vDate[vDate.size() - 1]);
-    grTempr->Fit("fitPol1", "R");
-    double pol0 = fitPol1->GetParameter(0);
-    double pol1 = fitPol1->GetParameter(1);
-    fitPol1->SetParameter(0, pol0);
-    fitPol1->SetParameter(1, pol1);
     fitPol1->SetLineColor(kRed);
     fitPol1->SetLineWidth(2);
+    grTempr->Fit("fitPol1", "R");
     cnTempr->Update();
 
     char dataName[128];
@@ -826,12 +840,12 @@ int getTemperature(string loc = "lund")
 
 
     char pdfName[128];
-    sprintf(pdfName, "temperature_%s.pdf", loc.c_str());
+    sprintf(pdfName, "temperature_%s.png", loc.c_str());
     cnTempr->SaveAs(pdfName);
 
     grTempr->GetXaxis()->SetRangeUser(vDate[(int)(0.4*vDate.size())], vDate[(int)(0.5*vDate.size())]);
     char pdfNameZoomed[128];
-    sprintf(pdfNameZoomed, "temperature_%s_zoomed.pdf", loc.c_str());
+    sprintf(pdfNameZoomed, "temperature_%s_zoomed.png", loc.c_str());
     cnTempr->SaveAs(pdfNameZoomed);
 
     return 0;
