@@ -428,7 +428,7 @@ void everyDay(string filePath="../clean_data/uppsala_clean.dat"){
 
 
 	TH1D* histED = new TH1D("histED", "Temperature;Day of the year;Temperature[#circC]", 365, 1, 365);
-	for(int bin = 1; bin <= histED->GetNbinsX(); ++bin) {
+	for(int bin = 2; bin <= histED->GetNbinsX()-1; ++bin) {
 		histED->SetBinContent(bin, daysMean[bin-1]);
 		histED->SetBinError(bin, daysStaDev[bin-1]);
 	}
@@ -436,8 +436,8 @@ void everyDay(string filePath="../clean_data/uppsala_clean.dat"){
 	histED->GetXaxis()->CenterTitle();
 	histED->GetYaxis()->CenterTitle();
 	histED->Draw("E L");
-	TH1I* histEDl = new TH1I("histED", "Temperature;Day of the year;Temperature[#circC]", 365, 1, 365);
-	for(int bin = 1; bin <= histEDl->GetNbinsX(); ++bin) {
+	TH1D* histEDl = new TH1D("histED", "Temperature;Day of the year;Temperature[#circC]", 365, 1, 365);
+	for(int bin = 2; bin <= histEDl->GetNbinsX()-1; ++bin) {
 		histEDl->SetBinContent(bin, daysMean[bin-1]);
 	}
 	histEDl->SetLineColor(1);
