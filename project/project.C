@@ -260,7 +260,7 @@ void everyDay(string filePath="../clean_data/uppsala_clean.dat"){
 		days[i]=i+1;
 		zeros[i]=0;
 	}
-	/*
+	
 	TCanvas* c1 = new TCanvas("c1", "every day graph one location", 900, 600);
 
 	gStyle->SetOptStat(0);
@@ -291,7 +291,7 @@ void everyDay(string filePath="../clean_data/uppsala_clean.dat"){
 	g1l->Draw("l");
 
 	c1->SaveAs("every_day_graph_one_location.pdf");
-	*/
+	
 
 	TCanvas* c4 = new TCanvas("c1", "every day graph one location histogram", 900, 600);
 
