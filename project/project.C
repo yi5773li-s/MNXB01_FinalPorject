@@ -154,7 +154,6 @@ Double_t oneDayProb(string filePath="../clean_data/lund_clean.dat", Int_t month=
 
 
 
-void WarmColdDay(string filePath="../clean_data/uppsala_clean.dat")
 
 #define LULEA_CLEAN "../clean_data/lulea_clean.dat"
 #define LUND_CLEAN "../clean_data/lund_clean.dat"
