@@ -461,38 +461,39 @@ void LattDiff(){
 	TGraphErrors* lundG2 = new TGraphErrors(n,days,lundM,zeros,zeros);
 	lundG2->SetTitle("Temperatures over the year for different Lattitudes");
 	lundG2->GetXaxis()->SetTitle("Days");
-  	lundG2->GetYaxis()->SetTitle("Temperature [#circC]");
+	lundG2->GetYaxis()->SetTitle("Temperature [#circC]");
 	lundG2->SetMaximum(20);
 	lundG2->SetMinimum(-15);
-	lundG2->SetLineColor(2)		lundG2->SetLineWidth(lw);
+	lundG2->SetLineWidth(lw);
+	lundG2->SetLineColor(2);
    	//mult2->Add(lundG2);
 	lundG2->Draw("AL");
 	//mult2->Add(lundG2,"l");
 
 	TGraphErrors* visbyG2 = new TGraphErrors(n,days,visbyM,zeros,zeros);
 	visbyG2->SetLineColor(3);
-   	visbyG2->SetLineWidth(lw);
+	visbyG2->SetLineWidth(lw);
    	//mult2->Add(visbyG2);
 	visbyG2->Draw("L");
 	//mult2->Add(visbyG2,"l");
 
 	TGraphErrors* upsalaG2 = new TGraphErrors(n,days,upsalaM,zeros,zeros);
 	upsalaG2->SetLineColor(4);
-   	upsalaG2->SetLineWidth(lw);
+	upsalaG2->SetLineWidth(lw);
    	//mult2->Add(upsalaG2);
 	upsalaG2->Draw("L");
 	//mult2->Add(upsalaG2,"l");
 
 	TGraphErrors* umeaG2 = new TGraphErrors(n,days,umeaM,zeros,zeros);
 	umeaG2->SetLineColor(6);
-   	umeaG2->SetLineWidth(lw);
+	umeaG2->SetLineWidth(lw);
    	//mult2->Add(umeaG2);
 	umeaG2->Draw("L");
 	//mult2->Add(umeaG2,"l");
 
 	TGraphErrors* luleuG2 = new TGraphErrors(n,days,luleuM,zeros,zeros);
 	luleuG2->SetLineColor(28);
-   	luleuG2->SetLineWidth(lw);
+	luleuG2->SetLineWidth(lw);
    	//mult2->Add(luleuG2);
 	luleuG2->Draw("L");
 	//mult2->Add(luleuG2,"l");
