@@ -542,7 +542,7 @@ void LattDiff(){
 
 
 }
-/*
+
 #include <string.h>
 #include <stdio.h>
 #include <TDatime.h>
@@ -714,4 +714,4 @@ int getTemperature(string loc = "lund")
 
     return 0;
 }
-*/
+
