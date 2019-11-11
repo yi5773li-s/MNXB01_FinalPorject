@@ -42,26 +42,26 @@ def clean_data(data_dir, save_dir, city_name=''):
 
 
 
-save_dir = '/Users/apple/Desktop/'
+save_dir = ''
 
 # for Lund
-data_dir0 = '/Users/apple/Desktop/smhi-opendata_Lund.csv'
+data_dir0 = 'smhi-opendata_Lund.csv'
 clean_data(data_dir0, save_dir, 'lund')
 
 # for Lulea
-data_dir1 = '/Users/apple/Desktop/smhi-opendata_Lulea.csv'
+data_dir1 = 'smhi-opendata_Lulea.csv'
 clean_data(data_dir1, save_dir, 'lulea')
 
 # for Umea
-data_dir2 = '/Users/apple/Desktop/smhi-opendata_Umea.csv'
+data_dir2 = 'smhi-opendata_Umea.csv'
 clean_data(data_dir2, save_dir, 'umea')
 
 # for Visby
-data_dir3 = '/Users/apple/Desktop/smhi-opendata_Visby.csv'
+data_dir3 = 'smhi-opendata_Visby.csv'
 clean_data(data_dir3, save_dir, 'visby')
 
 # for Uppsala which has a different format than the other ones
 # output format: year | month | date | temperature
-uppsala_data = np.loadtxt('/Users/apple/Desktop/uppsala_tm_1722-2013.dat')
+uppsala_data = np.loadtxt('uppsala_tm_1722-2013.dat')
 clean_uppsala = np.column_stack((uppsala_data[:, 0:3], uppsala_data[:, 4]))
-np.savetxt('/Users/apple/Desktop/uppsala_clean.dat', clean_uppsala, fmt='%.1f')
+np.savetxt('uppsala_clean.dat', clean_uppsala, fmt='%.1f')
