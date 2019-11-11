@@ -45,7 +45,12 @@
 The purpose of the project is to demonstrate some of the things we have learned about data processing and analysis throughout the course. To this end we have been given data about temperatures measured in different locations around Sweden. This data comes from the Swedish Meteorological and Hydrological Institute (SMHI) where in some cases measurements have been going on for hundreds of years. From this data we produced five different types of results named oneDay, WarmColdDay, everyDay, LattDiff and getTemperature named after the names of the main functions called to produce the results.\\\\
 
 
+
 \section{Function Descriptions}
+
+\subsection{Data Cleaning}
+\paragraph{}
+The raw data files were in the CSV form. Some small manual modifications were done first, such as taking away the description lines at the beginning of the files, and the rest cleaning process was done by a Python function. The input arguments of the function are the directory of where the original data file and the directory to store the clean data file. The function converts the CSV file into a .dat file which has the format [year, month, day, temperature] in each line. Some of the subsequent analysis functions are created for the clean data files.
 
 
 \subsection{oneDay}
@@ -66,7 +71,11 @@ The third part is different from the previous two parts. The function for the th
 
 \subsection{WarmColdDay}
 
-The WarmColdDay function demonstrates the days of warmest and coldest days occurred at and the output shown by histogram allows us to visualise when the warmest and coldest days are most likely to occur during the year. A Gaussian function is plotted to the histogram to fit the distribution. Figure \ref{fig:WarmCold} shows the output of this function.\\
+The WarmColdDay function demonstrates the days of warmest and coldest days occurred at and the output shown by histogram allows us to visualise when the warmest and coldest days are most likely to occur during the year. A Gaussian function is plotted to the histogram to fit the distribution.\\
+
+Figure \ref{fig:WarmCold} shows the output of this function, where the blue and red histogram indicates the coldest and warmest days respectively, while the blue and red gaussian line indicates the distribution of warmest and coldest days respectively. 
+
+
 
 
 
