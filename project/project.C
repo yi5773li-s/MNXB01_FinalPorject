@@ -664,7 +664,7 @@ void LattDiff(){
 }
 
 
-=======
+
 
 #include <string.h>
 
