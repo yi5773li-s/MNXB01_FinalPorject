@@ -12,6 +12,7 @@
 #include <TStyle.h>
 #include <TPaveStats.h>
 #include <string.h>
+#include <stdio.h>
 
 using std::string;
 using std::vector;
@@ -283,8 +284,8 @@ int WarmColdDay(string loc = "uppsala")
 			}
 			warm->Fill(date);
 		}
-		
-		
+
+
 
 		date = td[indexMin];
 		if (tm[indexMin] == 2 && td[indexMin] == 29)
@@ -346,7 +347,7 @@ int WarmColdDay(string loc = "uppsala")
 
         cnWarmCold->Modified();
         cnWarmCold->Update();
-    
+
         TPaveStats* stats1 = (TPaveStats*)(warm->FindObject("stats"));
         stats1->SetX1NDC(.1);
         stats1->SetX2NDC(.4);
@@ -366,7 +367,7 @@ int WarmColdDay(string loc = "uppsala")
         char pdfName[128];
         sprintf(pdfName, "cold_warm_day_%s.pdf", loc.c_str());
         cnWarmCold->SaveAs(pdfName);
-        
+
         return 0;
 }
 
@@ -380,7 +381,7 @@ void everyDay(string filePath="../clean_data/uppsala_clean.dat"){
 		days[i]=i+1;
 		zeros[i]=0;
 	}
-	
+
 	TCanvas* c1 = new TCanvas("c1", "every day graph one location", 900, 600);
 
 	gStyle->SetOptStat(0);
@@ -411,7 +412,7 @@ void everyDay(string filePath="../clean_data/uppsala_clean.dat"){
 	g1l->Draw("l");
 
 	c1->SaveAs("every_day_graph_one_location.pdf");
-	
+
 
 	TCanvas* c4 = new TCanvas("c1", "every day graph one location histogram", 900, 600);
 
@@ -665,14 +666,6 @@ void LattDiff(){
 
 
 
-
-#include <string.h>
-
-
-
-
-#include <stdio.h>
-
 #define BORAS "../MNXB01-project/datasets/smhi-opendata_Boras.csv"
 #define FALSTERBO "../MNXB01-project/datasets/smhi-opendata_Falsterbo.csv"
 #define FALUN "../MNXB01-project/datasets/smhi-opendata_Falun.csv"
@@ -850,4 +843,3 @@ int getTemperature(string loc = "lund")
 
     return 0;
 }
-
